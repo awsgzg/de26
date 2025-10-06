@@ -2,6 +2,7 @@
 
 ```tcl
 hostnamectl hostname ISP
+exec bash
 mkdir -p /etc/net/ifaces/ens{20,21,22}
 echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=dhcp\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens20/options
 echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=static\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens21/options
@@ -15,7 +16,6 @@ timedatectl set-timezone Asia/Yekaterinburg
 iptables -t nat -A POSTROUTING -o ens20 -s 0/0 -j MASQUERADE
 iptables-save > /etc/sysconfig/iptables
 systemctl enable --now iptables
-exec bash
 ```
 ---
 
@@ -98,6 +98,7 @@ dhcp-server 1
 exit
 write
 write
+
 
 
 
