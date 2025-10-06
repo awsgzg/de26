@@ -17,6 +17,7 @@ iptables-save > /etc/sysconfig/iptables
 systemctl enable --now iptables
 exec bash
 ```
+---
 
 ## - HQ-RTR
 
@@ -97,6 +98,7 @@ dhcp-server 1
 exit
 write
 write
+
 
 
 
