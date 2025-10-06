@@ -207,6 +207,17 @@ exec bash
 ```
 ---
 ## - HQ-CLI
+```tcl
+hostnamectl hostname hq-cli.au-team.irpo
+timedatectl set-timezone Asia/Yekaterinburg
+mkdir /etc/net/ifaces/ens20
+echo -e "TYPE=eth\nBOOTPROTO=dhcp" >> /etc/net/ifaces/ens20/options
+systemctl restart network
+apt-get update
+exec bash
+
+```
+---
 
 
 
