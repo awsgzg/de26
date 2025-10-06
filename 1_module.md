@@ -186,8 +186,27 @@ exec bash
 ---
 
 ## - BR-SRV
+```tcl
+hostnamectl hostname br-srv.au-team.irpo
+timedatectl set-timezone Asia/Yekaterinburg
+adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
+sed -i 's/# WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/ WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
+gpasswd -a "sshuser" wheel
+echo Authorized access only > /etc/openssh/banner
+sed -i '1i\Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner' /etc/openssh/sshd_config
+systemctl restart sshd
+mkdir /etc/net/ifaces/ens20
+echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=static\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens20/options
+echo 192.168.3.10/28 > /etc/net/ifaces/ens20/ipv4address
+echo default via 192.168.3.1 > /etc/net/ifaces/ens20/ipv4route
+echo nameserver 192.168.1.10 > /etc/resolv.conf
+systemctl restart network
+apt-get update
+exec bash
 
-
+```
+---
+## - HQ-CLI
 
 
 
