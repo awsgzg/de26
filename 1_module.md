@@ -98,6 +98,8 @@ dhcp-server 1
 exit
 write
 write
+
+
 ```
 ---
 
@@ -149,11 +151,14 @@ ip nat pool NAT_POOL 192.168.3.1-192.168.3.254
 ip nat source dynamic inside-to-outside pool NAT_POOL overload int int0
 write
 write
+
+
 ```
 
 ---
 
 ## - HQ-SRV
+
 
 
 
