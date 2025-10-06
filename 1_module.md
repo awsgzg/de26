@@ -8,6 +8,7 @@ echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=static\nCONFIG_IPV4=yes" >> /etc/net/i
 echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=static\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens22/options
 echo 172.16.1.1/28 > /etc/net/ifaces/ens21/ipv4address
 echo 172.16.2.1/28 > /etc/net/ifaces/ens22/ipv4address
+sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/g' /etc/net/sysctl.conf
 systemctl restart network
 apt-get update && apt-get install iptables -y && apt-get reinstall tzdata -y
 timedatectl set-timezone Asia/Yekaterinburg
@@ -16,6 +17,7 @@ iptables-save > /etc/sysconfig/iptables
 systemctl enable --now iptables
 exec bash
 ```
+
 
 
 
