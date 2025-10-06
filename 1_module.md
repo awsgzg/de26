@@ -179,12 +179,14 @@ sed -i '1i\no-resolv\ndomain=au-team.irpo\nserver=8.8.8.8\ninterface=*\naddress=
 echo -e "192.168.1.1\thq-rtr.au-team.irpo" >> /etc/hosts
 systemctl enable --now dnsmasq
 systemctl restart dnsmasq
+exec bash
 
 ```
 
 ---
 
 ## - BR-SRV
+
 
 
 
