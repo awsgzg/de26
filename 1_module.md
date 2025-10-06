@@ -98,8 +98,62 @@ dhcp-server 1
 exit
 write
 write
+```
+---
 
+## - BR-RTR
 
+```tcl
+hostname BR-RTR
+ip domain-name au-team.irpo
+ntp timezone utc+5
+username net_admin
+role admin
+password P@ssw0rd
+exit
+port te0
+service-instance te0/int0
+encapsulation untagged
+exit
+exit
+port te1
+service-instance te1/int1
+encapsulation untagged
+exit
+exit
+int int0
+ip address 172.16.2.2/28
+ip nat outside
+connect port te0 service-instance te0/int0
+exit
+int int1
+ip address 192.168.3.1/28
+ip nat inside
+connect port te1 service-instance te1/int1
+exit
+int tunnel.0
+ip address 172.16.0.2/30
+ip mtu 1400
+ip tunnel 172.16.2.2 172.16.1.2 mode gre
+ip ospf authentication-key ecorouter
+exit
+router ospf 1
+network 172.16.0.0/30 area 0
+network 192.168.3.0/28 area 0
+passive-interface default
+no passive-interface tunnel.0
+area 0 authentication
+exit
+ip route 0.0.0.0 0.0.0.0 172.16.2.1
+ip nat pool NAT_POOL 192.168.3.1-192.168.3.254
+ip nat source dynamic inside-to-outside pool NAT_POOL overload int int0
+write
+write
+```
+
+---
+
+## - HQ-SRV
 
 
 
