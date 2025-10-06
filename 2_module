@@ -1,0 +1,10 @@
+## - HQ-SRV
+```tcl
+sed -i '14 a\server=/au-team.irpo/192.168.3.10' /etc/dnsmasq.conf
+```
+---
+## - BR-SRV
+```tcl
+
+
+```
