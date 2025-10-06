@@ -51,21 +51,21 @@ exit
 int int0
 ip address 172.16.1.2/28
 ip nat outside
-connection port te0 service-instance te0/int0
+connect port te0 service-instance te0/int0
 exit
 int int1
 ip address 192.168.1.1/27
 ip nat inside
-connection port te1 service-instance te1/int1
+connect port te1 service-instance te1/int1
 exit
 int int2
 ip address 192.168.2.1/28
 ip nat inside
-connection port te1 service-instance te1/int2
+connect port te1 service-instance te1/int2
 exit
 int int3
 ip address 192.168.99.1/29
-connection port te1 service-instance te1/int3
+connect port te1 service-instance te1/int3
 exit
 int tunnel.0
 ip address 172.16.0.1/30
@@ -98,6 +98,7 @@ dhcp-server 1
 exit
 write
 write
+
 
 
 
