@@ -171,7 +171,7 @@ systemctl restart sshd
 mkdir /etc/net/ifaces/ens20
 echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=static\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens20/options
 echo 192.168.1.10/27 > /etc/net/ifaces/ens20/ipv4address
-echo deault via 192.168.1.1 > /etc/net/ifaces/ens20/ipv4route
+echo default via 192.168.1.1 > /etc/net/ifaces/ens20/ipv4route
 echo nameserver 8.8.8.8 > /etc/resolv.conf
 systemctl restart network
 apt-get update && apt-get install dnsmasq -y
@@ -185,6 +185,7 @@ systemctl restart dnsmasq
 ---
 
 ## - BR-SRV
+
 
 
 
