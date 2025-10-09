@@ -69,7 +69,7 @@ mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
 docker load < /media/ALTLinux/docker/mariadb_latest.tar
 
-
+printf 'services:\n  db:\n    image: mariadb\n    container_name: db\n    environment:\n      DB_NAME: testdb\n      DB_USER: test\n      DB_PASS: Password\n      MYSQL_ROOT_PASSWORD: Password\n      MYSQL_DATABASE: testdb\n      MYSQL_USER: test\n      MYSQL_PASSWORD: Password\n    volumes:\n      - db_data:/var/lib/mysql\n    networks:\n      - app_network\n    restart: unless-stopped\n  testapp:\n    image: site\n    container_name: testapp\n    environment:\n      DB_TYPE: maria\n      DB_HOST: db\n      DB_NAME: testdb\n      DB_USER: test\n      DB_PASS: Password\n      DB_PORT: 3306\n    ports:\n      - "8080:8000"\n    networks:\n      - app_network\n    depends_on:\n      - db\n    restart: unless-stopped\nvolumes:\n  db_data:\nnetworks:\n  app_network:\n    driver: bridge\n' > site.yml
 
 
 
