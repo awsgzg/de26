@@ -1,3 +1,26 @@
+## - HQ-SRV
+```tcl
+mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-c]
+mdadm --detail -scan --verbose > /etc/mdadm.conf
+apt-get update && apt-get install fdisk nfs-server -y
+fdisk /dev/md0
+printf "\nn\n\n\n\n\n\nw\n" | fdisk /dev/md0
+mkfs.ext4 /dev/md0p1
+echo -e "/dev/md0p1\t/raid\text4\tdefaults\t0\t0" >> /etc/fstab
+mkdir /raid
+mount -a
+mkdir /raid/nfs
+chown 99:99 /raid/nfs
+chmod 777 /raid/nfs
+echo -e "/raid/nfs 192.168.2.0/28(rw,sync,no_subtree_check)" >> /etc/exports
+exportfs -a
+exportfs -v
+systemctl enable --now nfs
+systemctl restart nfs
+
+```
+---
+
 ## - HQ-CLI
 ```tcl
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
@@ -6,12 +29,31 @@ gpasswd -a "sshuser" wheel
 echo Authorized access only > /etc/openssh/banner
 sed -i '1i\Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner' /etc/openssh/sshd_config
 systemctl restart sshd
+mkdir -p /mnt/nfs
+echo -e "192.168.1.10:/raid/nfs\t/mnt/nfs\t/nfs\tintr,soft,_netdev,x-systemd.automount\t0\t0" >> /etc/fstab
+mount -a
+mount -v
+touch /mnt/nfs/test
+
+```
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
 ## - BR-SRV
 ```tcl
 apt-repo add rpm http://altrepo.ru/local-p10 noarch local-p10
-apt-get update && apt-get install sshpass ansible task-samba-dc sudo-samba-schema docker-compose docker-engine -y
+apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
 echo -e "[servers]\nHQ-SRV ansible_host=192.168.1.10\nHQ-CLI ansible_host=192.168.2.10\n[servers:vars]\nansible_user=sshuser\nansible_port=2026\n[routers]\nHQ-RTR ansible_host=192.168.1.1\nBR-RTR ansible_host=192.168.3.1\n[routers:vars]\nansible_user=net_admin\nansible_password=P@ssw0rd\nansible_connection=network_cli\nansible_network_os=ios" > /etc/ansible/hosts
 sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
@@ -21,6 +63,45 @@ ansible HQ-SRV -m shell -a "sed -i '14 a\server=/au-team.irpo/192.168.3.10' /etc
 ansible HQ-SRV -m shell -a "systemctl restart dnsmasq" --become
 echo -e "192.168.3.10\tbr-srv.au-team.irpo" >> /etc/hosts
 echo nameserver 192.168.1.10 > /etc/resolv.conf
+
+systemctl enable --now docker
+mount -o loop /dev/sr0
+docker load < /media/ALTLinux/docker/site_latest.tar
+docker load < /media/ALTLinux/docker/mariadb_latest.tar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BR-SRV SAMBA
+(
 rm -rf /etc/samba/smb.conf
 samba-tool domain provision --realm=AU-TEAM.IRPO --domain=AU-TEAM --server-role=dc --dns-backend=SAMBA_INTERNAL --adminpass='P@ssw0rd'
 mv -f /var/lib/samba/private/krb5.conf /etc/krb5.conf
@@ -32,7 +113,7 @@ samba-tool useradd hquser4 P@ssw0rd
 samba-tool useradd hquser5 P@ssw0rd
 samba-tool group add hq
 samba-tool group addmembers hq hquser1,hquser2,hquser3,hquser4,hquser5
-
+)
 
 
 
