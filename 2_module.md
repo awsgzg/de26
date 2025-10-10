@@ -1,3 +1,74 @@
+## SAMBA
+## - BR-SRV
+```tcl
+apt-get update && apt-get install wget dos2unix task-samba-dc -y
+sleep 3
+echo nameserver 192.168.1.10 >> /etc/resolv.conf
+sleep 2
+echo 192.168.3.10 br-srv.au-team.irpo >> /etc/hosts
+rm -rf /etc/samba/smb.conf
+samba-tool domain provision --realm=AU-TEAM.IRPO --domain=AU-TEAM --adminpass=P@ssw0rd --dns-backend=SAMBA_INTERNAL --server-role=dc --option='dns forwarder=192.168.1.10'
+mv -f /var/lib/samba/private/krb5.conf /etc/krb5.conf
+systemctl enable --now samba.service
+samba-tool user add hquser1 P@ssw0rd
+samba-tool user add hquser2 P@ssw0rd
+samba-tool user add hquser3 P@ssw0rd
+samba-tool user add hquser4 P@ssw0rd
+samba-tool user add hquser5 P@ssw0rd
+samba-tool group add hq
+samba-tool group addmembers hq hquser1,hquser2,hquser3,hquser4,hquser5
+wget https://raw.githubusercontent.com/sudo-project/sudo/main/docs/schema.ActiveDirectory
+dos2unix schema.ActiveDirectory
+sed -i 's/DC=X/DC=au-team,DC=irpo/g' schema.ActiveDirectory
+head -$(grep -B1 -n '^dn:$' schema.ActiveDirectory | head -1 | grep -oP '\d+') schema.ActiveDirectory > first.ldif
+tail +$(grep -B1 -n '^dn:$' schema.ActiveDirectory | head -1 | grep -oP '\d+') schema.ActiveDirectory | sed '/^-/d' > second.ldif
+ldbadd -H /var/lib/samba/private/sam.ldb first.ldif --option="dsdb:schema update allowed"=true
+ldbmodify -v -H /var/lib/samba/private/sam.ldb second.ldif --option="dsdb:schema update allowed"=true
+samba-tool ou add 'ou=sudoers'
+cat << EOF > sudoRole-object.ldif
+dn: CN=prava_hq,OU=sudoers,DC=au-team,DC=irpo
+changetype: add
+objectClass: top
+objectClass: sudoRole
+cn: prava_hq
+name: prava_hq
+sudoUser: %hq
+sudoHost: ALL
+sudoCommand: /bin/grep
+sudoCommand: /bin/cat
+sudoCommand: /usr/bin/id
+sudoOption: !authenticate
+EOF
+ldbadd -H /var/lib/samba/private/sam.ldb sudoRole-object.ldif
+echo -e "dn: CN=prava_hq,OU=sudoers,DC=au-team,DC=irpo\nchangetype: modify\nreplace: nTSecurityDescriptor" > ntGen.ldif
+ldbsearch  -H /var/lib/samba/private/sam.ldb -s base -b 'CN=prava_hq,OU=sudoers,DC=au-team,DC=irpo' 'nTSecurityDescriptor' | sed -n '/^#/d;s/O:DAG:DAD:AI/O:DAG:DAD:AI\(A\;\;RPLCRC\;\;\;AU\)\(A\;\;RPWPCRCCDCLCLORCWOWDSDDTSW\;\;\;SY\)/;3,$p' | sed ':a;N;$!ba;s/\n\s//g' | sed -e 's/.\{78\}/&\n /g' >> ntGen.ldif
+ldbmodify -v -H /var/lib/samba/private/sam.ldb ntGen.ldif
+
+```
+## - HQ-CLI
+```tcl
+systemctl restart network
+apt-get update && apt-get install bind-utils sudo libsss_sudo -y
+system-auth write ad AU-TEAM.IRPO cli AU-TEAM 'administrator' 'P@ssw0rd'
+
+control sudo public
+sed -i '19 a\
+sudo_provider = ad' /etc/sssd/sssd.conf
+sed -i 's/services = nss, pam/services = nss, pam, sudo/' /etc/sssd/sssd.conf
+sed -i '28 a\
+sudoers: files sss' /etc/nsswitch.conf
+rm -rf /var/lib/sss/db/*
+sss_cache -E
+systemctl restart sssd
+sudo -l -U hquser1
+
+```
+
+
+
+
+## RAID
+
 ## - HQ-SRV
 ```tcl
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-c]
@@ -49,7 +120,7 @@ touch /mnt/nfs/test
 
 
 
-
+## ANSIBLE
 ## - BR-SRV
 ```tcl
 apt-repo add rpm http://altrepo.ru/local-p10 noarch local-p10
@@ -61,9 +132,11 @@ sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@19
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.2.10
 ansible HQ-SRV -m shell -a "sed -i '14 a\server=/au-team.irpo/192.168.3.10' /etc/dnsmasq.conf" --become
 ansible HQ-SRV -m shell -a "systemctl restart dnsmasq" --become
-echo -e "192.168.3.10\tbr-srv.au-team.irpo" >> /etc/hosts
-echo nameserver 192.168.1.10 > /etc/resolv.conf
 
+```
+## DOCKER
+## - BR-SRV
+```tcl
 systemctl enable --now docker
 mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
@@ -109,53 +182,43 @@ networks:
   app_network:
     driver: bridge
 EOF
+docker compose up -d
+docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%'IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'' FLUSH PRIVILEGES;"
 
-
-
+docker compose down && docker compose up -d
 
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-BR-SRV SAMBA
+## WEB
+## - HQ-SRV
 ```tcl
-(
-rm -rf /etc/samba/smb.conf
-samba-tool domain provision --realm=AU-TEAM.IRPO --domain=AU-TEAM --server-role=dc --dns-backend=SAMBA_INTERNAL --adminpass='P@ssw0rd'
-mv -f /var/lib/samba/private/krb5.conf /etc/krb5.conf
-systemctl enable --now samba
-samba-tool useradd hquser1 P@ssw0rd
-samba-tool useradd hquser2 P@ssw0rd
-samba-tool useradd hquser3 P@ssw0rd
-samba-tool useradd hquser4 P@ssw0rd
-samba-tool useradd hquser5 P@ssw0rd
-samba-tool group add hq
-samba-tool group addmembers hq hquser1,hquser2,hquser3,hquser4,hquser5
-)
+apt-get update && apt-get install -y apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium}
+mount -o loop /dev/sr0
+systemctl enable --now httpd2 mysqld
+mysql_secure_installation
+mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
 
 
 
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
