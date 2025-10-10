@@ -1,21 +1,21 @@
 ## - HQ-SRV
 ```tcl
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-c]
-mdadm --detail -scan --verbose > /etc/mdadm.conf
-apt-get update && apt-get install fdisk nfs-server -y
-fdisk /dev/md0
-printf "\nn\n\n\n\n\n\nw\n" | fdisk /dev/md0
+mdadm --detail -scan --verbose >> /etc/mdadm.conf
+apt-get update && apt-get install fdisk -y
+echo -e "n\n\n\n\n\nw" | fdisk /dev/md0
 mkfs.ext4 /dev/md0p1
-echo -e "/dev/md0p1\t/raid\text4\tdefaults\t0\t0" >> /etc/fstab
+echo -e "/dev/md0p1    /raid  ext4  defaults      0      0" >> /etc/fstab
 mkdir /raid
 mount -a
+apt-get install nfs-server -y
 mkdir /raid/nfs
 chown 99:99 /raid/nfs
 chmod 777 /raid/nfs
-echo -e "/raid/nfs 192.168.2.0/28(rw,sync,no_subtree_check)" >> /etc/exports
+echo -e "/raid/nfs  192.168.2.0/28(rw,sync,no_subtree_check)" >> /etc/exports
 exportfs -a
 exportfs -v
-systemctl enable --now nfs
+systemctl enable nfs
 systemctl restart nfs
 
 ```
@@ -68,14 +68,52 @@ systemctl enable --now docker
 mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
 docker load < /media/ALTLinux/docker/mariadb_latest.tar
+cat > docker-compose.yml << 'EOF'
+services:
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: Passw0rd
+      MYSQL_ROOT_PASSWORD: Passw0rd
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: test
+      MYSQL_PASSWORD: Passw0rd
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+    restart: unless-stopped
+  testapp:
+    image: site
+    container_name: testapp
+    environment:
+      DB_TYPE: maria
+      DB_HOST: db
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: Passw0rd
+      DB_PORT: 3306
+    ports:
+      - "8080:8000"
+    networks:
+      - app_network
+    depends_on:
+      - db
+    restart: unless-stopped
+volumes:
+  db_data:
+networks:
+  app_network:
+    driver: bridge
+EOF
 
-printf 'services:\n  db:\n    image: mariadb\n    container_name: db\n    environment:\n      DB_NAME: testdb\n      DB_USER: test\n      DB_PASS: Password\n      MYSQL_ROOT_PASSWORD: Password\n      MYSQL_DATABASE: testdb\n      MYSQL_USER: test\n      MYSQL_PASSWORD: Password\n    volumes:\n      - db_data:/var/lib/mysql\n    networks:\n      - app_network\n    restart: unless-stopped\n  testapp:\n    image: site\n    container_name: testapp\n    environment:\n      DB_TYPE: maria\n      DB_HOST: db\n      DB_NAME: testdb\n      DB_USER: test\n      DB_PASS: Password\n      DB_PORT: 3306\n    ports:\n      - "8080:8000"\n    networks:\n      - app_network\n    depends_on:\n      - db\n    restart: unless-stopped\nvolumes:\n  db_data:\nnetworks:\n  app_network:\n    driver: bridge\n' > site.yml
 
 
 
-
-
-
+```
 
 
 
