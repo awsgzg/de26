@@ -139,6 +139,7 @@ EOF
 
 
 BR-SRV SAMBA
+```tcl
 (
 rm -rf /etc/samba/smb.conf
 samba-tool domain provision --realm=AU-TEAM.IRPO --domain=AU-TEAM --server-role=dc --dns-backend=SAMBA_INTERNAL --adminpass='P@ssw0rd'
