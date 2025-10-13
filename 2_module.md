@@ -83,14 +83,14 @@ mdadm --detail -scan --verbose >> /etc/mdadm.conf
 apt-get update && apt-get install fdisk -y
 echo -e "n\n\n\n\n\nw" | fdisk /dev/md0
 mkfs.ext4 /dev/md0p1
-echo -e "/dev/md0p1    /raid  ext4  defaults      0      0" >> /etc/fstab
+echo -e "/dev/md0p1\t/raid\text4\tdefaults\t0\t0" >> /etc/fstab
 mkdir /raid
 mount -a
 apt-get install nfs-server -y
 mkdir /raid/nfs
 chown 99:99 /raid/nfs
 chmod 777 /raid/nfs
-echo -e "/raid/nfs  192.168.2.0/28(rw,sync,no_subtree_check)" >> /etc/exports
+echo -e "/raid/nfs 192.168.2.0/28(rw,sync,no_subtree_check)" >> /etc/exports
 exportfs -a
 exportfs -v
 systemctl enable nfs
@@ -108,7 +108,7 @@ echo Authorized access only > /etc/openssh/banner
 sed -i '1i\Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner' /etc/openssh/sshd_config
 systemctl restart sshd
 mkdir -p /mnt/nfs
-echo -e "192.168.1.10:/raid/nfs\t/mnt/nfs\t/nfs\tintr,soft,_netdev,x-systemd.automount\t0\t0" >> /etc/fstab
+echo -e "192.168.1.10:/raid/nfs\t/mnt/nfs\tnfs\tintr,soft,_netdev,x-systemd.automount\t0\t0" >> /etc/fstab
 mount -a
 mount -v
 touch /mnt/nfs/test
