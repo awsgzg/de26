@@ -193,7 +193,7 @@ docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE U
 sleep 2
 docker compose down && docker compose up -d
 mkdir config
-echo -e "docker compose -f down\nsystemctl restart docker\ndocker compose up -d"
+echo -e "docker compose -f down\nsystemctl restart docker\ndocker compose up -d" > /config/autorestart.sh
 export EDITOR=vim
 echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
 
