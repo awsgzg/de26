@@ -137,9 +137,7 @@ sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.1.10
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.2.10
-ansible HQ-SRV -m shell -a "sed -i '14 a\server=/au-team.irpo/192.168.3.10' /etc/dnsmasq.conf" --become
-ansible HQ-SRV -m shell -a "systemctl restart dnsmasq" --become
-
+ansible all -m ping
 ```
 ## DOCKER
 ## - BR-SRV
