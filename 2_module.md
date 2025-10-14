@@ -461,8 +461,9 @@ chronyc tracking | grep Stratum
   ntp server 172.16.1.1
   ntp timezone utc+5
   exit
-  show ntp status
   write memory
+  show ntp status
+  
   ```
 
 ---
@@ -474,8 +475,9 @@ chronyc tracking | grep Stratum
   ntp server 172.16.2.1
   ntp timezone utc+5
   exit
+write memory
   show ntp status
-  write memory
+  
   ```
 
 ---
