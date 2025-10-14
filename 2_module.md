@@ -1,13 +1,13 @@
 ## <details> <summary>SAMBA</summary>
 
-### - HQ-SRV
+- HQ-SRV
 ```tcl
 echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
 systemctl restart dnsmasq
 
 ```
 
-## - BR-SRV
+- BR-SRV
 ```tcl
 apt-get update && apt-get install wget dos2unix task-samba-dc -y
 sleep 3
@@ -53,7 +53,7 @@ ldbsearch  -H /var/lib/samba/private/sam.ldb -s base -b 'CN=prava_hq,OU=sudoers,
 ldbmodify -v -H /var/lib/samba/private/sam.ldb ntGen.ldif
 
 ```
-## - HQ-CLI
+- HQ-CLI
 ```tcl
 systemctl restart network
 apt-get update && apt-get install bind-utils sudo libsss_sudo -y
