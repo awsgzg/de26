@@ -520,7 +520,6 @@ chronyc tracking | grep Stratum
 
 - ## BR-SRV
 ```tcl
-apt-repo add rpm http://altrepo.ru/local-p10 noarch local-p10
 apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
 echo -e "[servers]\nHQ-SRV ansible_host=192.168.1.10\nHQ-CLI ansible_host=192.168.2.10\n[servers:vars]\nansible_user=sshuser\nansible_port=2026\n[routers]\nHQ-RTR ansible_host=192.168.1.1\nBR-RTR ansible_host=192.168.3.1\n[routers:vars]\nansible_user=net_admin\nansible_password=P@ssw0rd\nansible_connection=network_cli\nansible_network_os=ios" > /etc/ansible/hosts
 sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
