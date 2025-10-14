@@ -2,7 +2,7 @@
 <summary>SAMBA</summary>
 
 ### - HQ-SRV
-```tcl
+```yaml
 echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
 systemctl restart dnsmasq
 
