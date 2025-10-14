@@ -72,7 +72,7 @@ sudo -l -U hquser1
 
 ```
 
-</details>
+## </details>
 
 
 
