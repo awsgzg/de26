@@ -221,7 +221,26 @@ systemctl restart httpd2
 sed -i 's/$username = "user";/$username = "webc";/g' /var/www/html/index.php
 sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index.php
 sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
+```
 
+## -BR-RTR
+```
+en
+conf
+ip nat source static tcp 192.168.3.10 8080 172.16.2.2 8080
+ip nat source static tcp 192.168.3.10 2026 172.16.2.2 2026
+write
+
+```
+## -HQ-RTR
+```
+en
+conf
+ip nat source static tcp 192.168.1.10 80 172.16.1.2 8080
+ip nat source static tcp 192.168.1.10 2026 172.16.1.2 2026
+write
+
+```
 
 
 
