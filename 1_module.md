@@ -243,7 +243,9 @@ exec bash
 
 ```
 </details>
+
 ---
+
 <details>
 <summary>HQ-CLI</summary>
   
@@ -260,6 +262,7 @@ exec bash
 </details>
 
 ---
+
 
 
 
