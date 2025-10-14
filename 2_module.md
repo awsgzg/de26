@@ -125,7 +125,69 @@ touch /mnt/nfs/test
 </details>
 
 
+<details>
+<summary>Chrony</summary>
 
+- ## ISP
+```tcl
+apt-get install chrony -y
+echo -e "server 127.0.0.1 iburst prefer\nhwtimestamp *\nlocal stratum 5\nallow 0/0" > /etc/chrony.conf
+systemctl enable --now chronyd
+systemctl restart chronyd
+sleep 2
+chronyc sources
+sleep 2
+chronyc tracking | grep Stratum
+```
+
+- ## HQ-RTR
+  ```tcl
+  en
+  conf
+  ntp server 172.16.1.1
+  ntp timezone utc+5
+  exit
+  show ntp status
+  write memory
+  ```
+
+  - ## BR-RTR
+  ```tcl
+  en
+  conf
+  ntp server 172.16.2.1
+  ntp timezone utc+5
+  exit
+  show ntp status
+  write memory
+  ```
+
+  - ## HQ-CLI
+  ```tcl
+  apt-get install chrony -y
+  echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
+  systemctl enable --now chronyd
+  sleep 2
+  chronyc sources
+  ```
+
+  - ## HQ-SRV
+  ```tcl
+  apt-get install chrony -y
+  echo -e "server 172.16.1.1 iburst prefer"
+  systemctl enable --now chronyd
+  sleep 2
+  chronyc sources
+  ```
+
+  - ## BR-SRV
+  ```tcl
+  apt-get install chrony -y
+  echo -e "server 172.16.2.1 iburst prefer" > /etc/chrony.conf
+  systemctl enable --now chronyd
+  sleep 2
+  chronyc sources
+  ```
 
 
 
@@ -298,7 +360,17 @@ systemctl enable --now nginx
 ```
 </details>
 
+<details>
+<summary>Yandex</summary>
+
+- ## HQ-CLI
+```tcl
+apt-get install yandex-browser -y
+```
 </details>
+
+</details>
+
 
 
 
