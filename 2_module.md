@@ -116,8 +116,6 @@ systemctl restart chronyd
 sleep 2
 chronyc sources
 sleep 2
-chronyc tracking | grep Stratum
-sleep 2
 mount -o loop /dev/sr0
 systemctl enable --now httpd2 mysqld
 sleep 3
