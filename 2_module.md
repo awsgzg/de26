@@ -119,6 +119,7 @@ chronyc tracking | grep Stratum
 sleep 2
 mount -o loop /dev/sr0
 systemctl enable --now httpd2 mysqld
+sleep 3
 echo -e "\n\n\n\n\nP@ssw0rd\nP@ssw0rd\n\n\n\n" | mysql_secure_installation
 mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
 iconv -f UTF-16LE -t UTF-8 /media/ALTLinux/web/dump.sql > /tmp/dump_utf8.sql
@@ -184,6 +185,7 @@ ldbmodify -v -H /var/lib/samba/private/sam.ldb ntGen.ldif
 sleep 2
 echo -e "server 172.16.2.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
+systemctl restart chronyd
 sleep 2
 chronyc sources
 sleep 2
@@ -282,6 +284,7 @@ touch /mnt/nfs/test
 sleep 2
   echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
   systemctl enable --now chronyd
+systemctl restart chronyd
   sleep 2
   chronyc sources
 
@@ -482,6 +485,7 @@ chronyc tracking | grep Stratum
   apt-get install chrony -y
   echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
   systemctl enable --now chronyd
+systemctl restart chronyd
   sleep 2
   chronyc sources
   ```
@@ -493,6 +497,7 @@ chronyc tracking | grep Stratum
   apt-get install chrony -y
   echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
   systemctl enable --now chronyd
+systemctl restart chronyd
   sleep 2
   chronyc sources
   ```
@@ -504,6 +509,7 @@ chronyc tracking | grep Stratum
   apt-get install chrony -y
   echo -e "server 172.16.2.1 iburst prefer" > /etc/chrony.conf
   systemctl enable --now chronyd
+systemctl restart chronyd
   sleep 2
   chronyc sources
   ```
@@ -612,6 +618,7 @@ docker compose down && docker compose up -d
 apt-get update && apt-get install -y apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium}
 mount -o loop /dev/sr0
 systemctl enable --now httpd2 mysqld
+sleep 3
 echo -e "\n\n\n\n\nP@ssw0rd\nP@ssw0rd\n\n\n\n" | mysql_secure_installation
 mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
 iconv -f UTF-16LE -t UTF-8 /media/ALTLinux/web/dump.sql > /tmp/dump_utf8.sql
