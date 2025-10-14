@@ -1,4 +1,4 @@
-## <detail>
+## <details>
 </summary>SAMBA</summary>
 
 ### - HQ-SRV
@@ -72,7 +72,7 @@ systemctl restart sssd
 sudo -l -U hquser1
 
 ```
-
+</details>
 
 
 
