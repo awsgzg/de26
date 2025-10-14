@@ -1,6 +1,7 @@
 <details>
 <summary>speed config</summary>
 
+---
 
 - ## HQ-CLI
 ```tcl
