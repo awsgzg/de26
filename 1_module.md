@@ -1,7 +1,7 @@
 <details>
 <summary>ALTREPO</summary>
 
-## - ISP
+- ## ISP
 ```
 cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
 sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
@@ -11,7 +11,7 @@ rpm [p11] http://192.168.0.91/mirror p11/branch/noarch classic
 rpm [p11] http://192.168.0.91/mirror p11/branch/x86_64-i586 classic
 EOF
 ```
-## - CLI - SRV
+- ## CLI - SRV
 ```
 cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
 sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
@@ -23,7 +23,8 @@ EOF
 ```
 </details>
 
-## - ISP
+<details>
+<summary>ISP</summary>
 
 ```tcl
 hostnamectl hostname isp
@@ -243,6 +244,7 @@ exec bash
 
 ```
 ---
+
 
 
 
