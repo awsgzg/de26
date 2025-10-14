@@ -1,4 +1,6 @@
-(
+<details>
+<summary>ALTREPO</summary>
+
 ## - ISP
 ```
 cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
@@ -19,7 +21,7 @@ rpm [p10] http://192.168.0.91/mirror p10/branch/noarch classic
 rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64-i586 classic
 EOF
 ```
-)
+</details>
 
 ## - ISP
 
@@ -241,6 +243,7 @@ exec bash
 
 ```
 ---
+
 
 
 
