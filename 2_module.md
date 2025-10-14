@@ -1,6 +1,7 @@
 <details>
 <summary>speed config</summary>
 
+
 - ## HQ-CLI
 ```tcl
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
@@ -365,6 +366,8 @@ sudo -l -U hquser1
 
 <details>
 <summary>RAID</summary>
+
+
 
 - ## HQ-SRV
 ```tcl
