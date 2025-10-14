@@ -1,4 +1,5 @@
- <details> <summary>SAMBA</summary>
+ <details>  
+ ## <summary>SAMBA</summary>
 
 - ### HQ-SRV
 ```tcl
