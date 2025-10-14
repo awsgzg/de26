@@ -131,6 +131,7 @@ write
 
 ```
 </details>
+
 ---
 
 <details>
@@ -186,6 +187,7 @@ write
 
 ```
 </details>
+
 ---
 
 <details>
@@ -215,6 +217,7 @@ exec bash
 
 ```
 </details>
+
 ---
 
 <details>
@@ -255,7 +258,9 @@ exec bash
 
 ```
 </details>
+
 ---
+
 
 
 
