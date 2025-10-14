@@ -109,7 +109,7 @@ systemctl enable nfs
 systemctl restart nfs
 sleep 2
 apt-get install chrony apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium} -y
-echo -e "server 127.0.0.1 iburst prefer\nhwtimestamp *\nlocal stratum 5\nallow 0/0" > /etc/chrony.conf
+echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
 sleep 2
@@ -491,7 +491,7 @@ chronyc tracking | grep Stratum
   - ## HQ-SRV
   ```tcl
   apt-get install chrony -y
-  echo -e "server 172.16.1.1 iburst prefer"
+  echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
   systemctl enable --now chronyd
   sleep 2
   chronyc sources
