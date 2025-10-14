@@ -155,7 +155,7 @@ services:
       DB_NAME: testdb
       DB_USER: test
       DB_PASS: Passw0rd
-      MYSQL_ROOT_PASSWORD: Passw0rd
+      MYSQL_ROOT_PASSWORD: Passwr0d
       MYSQL_DATABASE: testdb
       MYSQL_USER: test
       MYSQL_PASSWORD: Passw0rd
