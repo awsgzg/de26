@@ -43,9 +43,12 @@ iptables-save > /etc/sysconfig/iptables
 systemctl enable --now iptables
 exec bash
 ```
+</details>
+
 ---
 
-## - HQ-RTR
+<details>
+<summary>HQ-RTR</summary>
 
 ```tcl
 hostname hq-rtr
@@ -127,9 +130,11 @@ write
 
 
 ```
+</details>
 ---
 
-## - BR-RTR
+<details>
+<summary>BR-RTR</summary>
 
 ```tcl
 hostname BR-RTR
@@ -180,10 +185,11 @@ write
 
 
 ```
-
+</details>
 ---
 
-## - HQ-SRV
+<details>
+<summary>HQ-SRV</summary>
 
 ```tcl
 hostnamectl hostname hq-srv.au-team.irpo
@@ -208,11 +214,13 @@ systemctl restart dnsmasq
 exec bash
 
 ```
-
+</details>
 ---
 
-## - BR-SRV
-```tcl
+<details>
+<summary>BR-SRV</summary>
+
+  ```tcl
 hostnamectl hostname br-srv.au-team.irpo
 timedatectl set-timezone Asia/Yekaterinburg
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
@@ -231,8 +239,11 @@ apt-get update
 exec bash
 
 ```
+</details>
 ---
-## - HQ-CLI
+<details>
+<summary>HQ-CLI</summary>
+  
 ```tcl
 hostnamectl hostname hq-cli.au-team.irpo
 timedatectl set-timezone Asia/Yekaterinburg
@@ -243,7 +254,9 @@ apt-get update
 exec bash
 
 ```
+</details>
 ---
+
 
 
 
