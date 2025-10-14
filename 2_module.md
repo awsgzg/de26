@@ -66,6 +66,7 @@ systemctl enable --now nginx
   ntp timezone utc+5
 ip nat source static tcp 192.168.1.10 80 172.16.1.2 8080
 ip nat source static tcp 192.168.1.10 2026 172.16.1.2 2026
+write
 
 ```
 
