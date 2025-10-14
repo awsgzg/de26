@@ -188,7 +188,7 @@ chronyc tracking | grep Stratum
   sleep 2
   chronyc sources
   ```
-
+</details>
 
 
 
