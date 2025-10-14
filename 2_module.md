@@ -142,7 +142,7 @@ sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 ```tcl
 apt-get update && apt-get install wget dos2unix task-samba-dc chrony sshpass ansible docker-compose docker-engine -y
 sleep 3
-echo nameserver 192.168.1.10 >> /etc/resolv.conf
+echo nameserver 192.168.1.10 > /etc/resolv.conf
 sleep 2
 echo 192.168.3.10 br-srv.au-team.irpo >> /etc/hosts
 rm -rf /etc/samba/smb.conf
@@ -317,7 +317,7 @@ systemctl restart dnsmasq
 ```tcl
 apt-get update && apt-get install wget dos2unix task-samba-dc -y
 sleep 3
-echo nameserver 192.168.1.10 >> /etc/resolv.conf
+echo nameserver 192.168.1.10 > /etc/resolv.conf
 sleep 2
 echo 192.168.3.10 br-srv.au-team.irpo >> /etc/hosts
 rm -rf /etc/samba/smb.conf
