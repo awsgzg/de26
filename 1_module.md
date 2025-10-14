@@ -1,6 +1,5 @@
+(
 ## - ISP
-
-```tcl
 cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
 sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
 cat >> /etc/apt/sources.list.d/alt.list <<EOF
@@ -8,6 +7,19 @@ rpm [p11] http://192.168.0.91/mirror p11/branch/x86_64 classic
 rpm [p11] http://192.168.0.91/mirror p11/branch/noarch classic
 rpm [p11] http://192.168.0.91/mirror p11/branch/x86_64-i586 classic
 EOF
+## - CLI - SRV
+cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
+sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
+cat >> /etc/apt/sources.list.d/alt.list <<EOF
+rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64 classic
+rpm [p10] http://192.168.0.91/mirror p10/branch/noarch classic
+rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64-i586 classic
+EOF
+)
+
+## - ISP
+
+```tcl
 hostnamectl hostname isp
 mkdir -p /etc/net/ifaces/ens{20,21,22}
 echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=dhcp\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens20/options
@@ -167,13 +179,6 @@ write
 ## - HQ-SRV
 
 ```tcl
-cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
-sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
-cat >> /etc/apt/sources.list.d/alt.list <<EOF
-rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64 classic
-rpm [p10] http://192.168.0.91/mirror p10/branch/noarch classic
-rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64-i586 classic
-EOF
 hostnamectl hostname hq-srv.au-team.irpo
 timedatectl set-timezone Asia/Yekaterinburg
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
@@ -201,13 +206,6 @@ exec bash
 
 ## - BR-SRV
 ```tcl
-cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
-sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
-cat >> /etc/apt/sources.list.d/alt.list <<EOF
-rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64 classic
-rpm [p10] http://192.168.0.91/mirror p10/branch/noarch classic
-rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64-i586 classic
-EOF
 hostnamectl hostname br-srv.au-team.irpo
 timedatectl set-timezone Asia/Yekaterinburg
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
@@ -229,13 +227,6 @@ exec bash
 ---
 ## - HQ-CLI
 ```tcl
-cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
-sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
-cat >> /etc/apt/sources.list.d/alt.list <<EOF
-rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64 classic
-rpm [p10] http://192.168.0.91/mirror p10/branch/noarch classic
-rpm [p10] http://192.168.0.91/mirror p10/branch/x86_64-i586 classic
-EOF
 hostnamectl hostname hq-cli.au-team.irpo
 timedatectl set-timezone Asia/Yekaterinburg
 mkdir /etc/net/ifaces/ens20
@@ -246,6 +237,7 @@ exec bash
 
 ```
 ---
+
 
 
 
