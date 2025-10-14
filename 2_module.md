@@ -1,4 +1,5 @@
-## SAMBA
+## <detail>
+</summary>SAMBA</summary>
 ## - HQ-SRV
 ```tcl
 echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
@@ -244,11 +245,36 @@ write
 ## NGINX
 ## -ISP
 ```
-apt-get install nginx -y
+apt-get install nginx apache2-htpasswd -y
+htpasswd -bc /etc/nginx/.htpasswd WEB P@ssw0rd
 cat > /etc/nginx/sites-available.d/proxy.conf << 'EOF'
+server {
+        listen 80;
+        server_name web.au-team.irpo;
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        location / {
+                proxy_pass http://172.16.1.2:8080;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+        }
+}
+server {
+        listen 80;
+        server_name docker.au-team.irpo;
+        location / {
+                proxy_pass http://172.16.2.2:8080;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+        }
+}
+EOF
+sleep 2
+ln -s /etc/nginx/sites-available.d/proxy.conf /etc/nginx/sites-enabled.d/
+mv /etc/nginx/sites-avalible.d/default.conf /root/
+systemctl enable --now nginx
 
-
-
+```
 
 
 
