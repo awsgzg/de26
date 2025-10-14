@@ -1,14 +1,14 @@
  <details>
 <summary>SAMBA</summary>
 
-- ### HQ-SRV
+- ## HQ-SRV
 ```tcl
 echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
 systemctl restart dnsmasq
 
 ```
 
-- BR-SRV
+- ## BR-SRV
 ```tcl
 apt-get update && apt-get install wget dos2unix task-samba-dc -y
 sleep 3
@@ -54,7 +54,7 @@ ldbsearch  -H /var/lib/samba/private/sam.ldb -s base -b 'CN=prava_hq,OU=sudoers,
 ldbmodify -v -H /var/lib/samba/private/sam.ldb ntGen.ldif
 
 ```
-- HQ-CLI
+- ## HQ-CLI
 ```tcl
 systemctl restart network
 apt-get update && apt-get install bind-utils sudo libsss_sudo -y
@@ -76,10 +76,10 @@ sudo -l -U hquser1
 </details>
 
 
+<details>
+<summary>RAID</summary>
 
-## RAID
-
-## - HQ-SRV
+- ## HQ-SRV
 ```tcl
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-c]
 mdadm --detail -scan --verbose >> /etc/mdadm.conf
@@ -102,7 +102,7 @@ systemctl restart nfs
 ```
 ---
 
-## - HQ-CLI
+- ## HQ-CLI
 ```tcl
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
 sed -i 's/# WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/ WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
@@ -119,6 +119,7 @@ touch /mnt/nfs/test
 ```
 
 ---
+</details>
 
 
 
@@ -129,9 +130,9 @@ touch /mnt/nfs/test
 
 
 
+<summary>ANSIBLE</summary>
 
-## ANSIBLE
-## - BR-SRV
+- ## BR-SRV
 ```tcl
 apt-repo add rpm http://altrepo.ru/local-p10 noarch local-p10
 apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
@@ -142,8 +143,10 @@ sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@19
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.2.10
 ansible all -m ping
 ```
-## DOCKER
-## - BR-SRV
+<details>
+<summary>DOCKER</summary>
+
+ - ## BR-SRV
 ```tcl
 systemctl enable --now docker
 mount -o loop /dev/sr0
@@ -204,9 +207,12 @@ docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE U
 sleep 2
 docker compose down && docker compose up -d
 ```
+</details>
 
-## WEB
-## - HQ-SRV
+<details>
+<summary>WEB</summary>
+
+- ## HQ-SRV
 ```tcl
 apt-get update && apt-get install -y apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium}
 mount -o loop /dev/sr0
@@ -225,8 +231,12 @@ sed -i 's/$username = "user";/$username = "webc";/g' /var/www/html/index.php
 sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index.php
 sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 ```
+</details>
 
-## -BR-RTR
+<details>
+ <summary>Проброс портов</summary>
+
+- ## BR-RTR
 ```
 en
 conf
@@ -235,7 +245,7 @@ ip nat source static tcp 192.168.3.10 2026 172.16.2.2 2026
 write
 
 ```
-## -HQ-RTR
+- ## HQ-RTR
 ```
 en
 conf
@@ -244,8 +254,12 @@ ip nat source static tcp 192.168.1.10 2026 172.16.1.2 2026
 write
 
 ```
-## NGINX
-## -ISP
+</details>
+
+<details>
+<summary>NGINX</summary>
+
+- ## ISP
 ```
 apt-get install nginx apache2-htpasswd -y
 htpasswd -bc /etc/nginx/.htpasswd WEB P@ssw0rd
@@ -277,7 +291,7 @@ mv /etc/nginx/sites-avalible.d/default.conf /root/
 systemctl enable --now nginx
 
 ```
-
+</details>
 
 
 
