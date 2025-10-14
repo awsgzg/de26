@@ -12,6 +12,7 @@ echo Authorized access only > /etc/openssh/banner
 sed -i '1i\Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner' /etc/openssh/sshd_config
 systemctl restart sshd
 ```
+
 ---
 
 - ## ISP
@@ -55,6 +56,8 @@ systemctl enable --now nginx
 
 ```
 
+---
+
 - ## HQ-RTR
 ```tcl
  en
@@ -65,6 +68,7 @@ ip nat source static tcp 192.168.1.10 80 172.16.1.2 8080
 ip nat source static tcp 192.168.1.10 2026 172.16.1.2 2026
 
 ```
+
 ---
 
 - ## BR-RTR
@@ -130,6 +134,7 @@ sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index
 sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 
 ```
+
 ---
 
 - ## BR-SRV
@@ -250,6 +255,8 @@ docker compose down && docker compose up -d
 
 ```
 
+---
+
 - ## HQ-CLI
 ```tcl
 systemctl restart network
@@ -286,9 +293,13 @@ sleep 2
 
 <details>
 <summary>Настройка по пунктам</summary>
+
+---
  
  <details>
 <summary>SAMBA</summary>
+
+---
 
 - ## HQ-SRV
 ```tcl
@@ -296,6 +307,8 @@ echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
 systemctl restart dnsmasq
 
 ```
+
+---
 
 - ## BR-SRV
 ```tcl
@@ -343,6 +356,9 @@ ldbsearch  -H /var/lib/samba/private/sam.ldb -s base -b 'CN=prava_hq,OU=sudoers,
 ldbmodify -v -H /var/lib/samba/private/sam.ldb ntGen.ldif
 
 ```
+
+---
+
 - ## HQ-CLI
 ```tcl
 systemctl restart network
@@ -364,11 +380,12 @@ sudo -l -U hquser1
 
 </details>
 
+---
 
 <details>
 <summary>RAID</summary>
 
-
+---
 
 - ## HQ-SRV
 ```tcl
@@ -391,6 +408,7 @@ systemctl enable nfs
 systemctl restart nfs
 
 ```
+
 ---
 
 - ## HQ-CLI
@@ -412,9 +430,12 @@ touch /mnt/nfs/test
 ---
 </details>
 
+---
 
 <details>
 <summary>Chrony</summary>
+
+---
 
 - ## ISP
 ```tcl
@@ -428,6 +449,8 @@ sleep 2
 chronyc tracking | grep Stratum
 ```
 
+---
+
 - ## HQ-RTR
   ```tcl
   en
@@ -438,6 +461,8 @@ chronyc tracking | grep Stratum
   show ntp status
   write memory
   ```
+
+---
 
   - ## BR-RTR
   ```tcl
@@ -450,6 +475,8 @@ chronyc tracking | grep Stratum
   write memory
   ```
 
+---
+
   - ## HQ-CLI
   ```tcl
   apt-get install chrony -y
@@ -459,6 +486,8 @@ chronyc tracking | grep Stratum
   chronyc sources
   ```
 
+---
+
   - ## HQ-SRV
   ```tcl
   apt-get install chrony -y
@@ -467,6 +496,8 @@ chronyc tracking | grep Stratum
   sleep 2
   chronyc sources
   ```
+
+---
 
   - ## BR-SRV
   ```tcl
@@ -479,11 +510,13 @@ chronyc tracking | grep Stratum
 </details>
 
 
-
+---
 
 
 <details>
 <summary>ANSIBLE</summary>
+
+---
 
 - ## BR-SRV
 ```tcl
@@ -498,8 +531,12 @@ ansible all -m ping
 ```
 </details>
 
+---
+
 <details>
 <summary>DOCKER</summary>
+
+---
 
  - ## BR-SRV
 ```tcl
@@ -564,8 +601,12 @@ docker compose down && docker compose up -d
 ```
 </details>
 
+---
+
 <details>
 <summary>WEB</summary>
+
+---
 
 - ## HQ-SRV
 ```tcl
@@ -588,8 +629,12 @@ sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 ```
 </details>
 
+---
+
 <details>
  <summary>Проброс портов</summary>
+
+---
 
 - ## BR-RTR
 ```
@@ -600,6 +645,9 @@ ip nat source static tcp 192.168.3.10 2026 172.16.2.2 2026
 write
 
 ```
+
+---
+
 - ## HQ-RTR
 ```
 en
@@ -611,8 +659,12 @@ write
 ```
 </details>
 
+---
+
 <details>
 <summary>NGINX</summary>
+
+---
 
 - ## ISP
 ```
@@ -648,8 +700,12 @@ systemctl enable --now nginx
 ```
 </details>
 
+---
+
 <details>
 <summary>Yandex</summary>
+
+---
 
 - ## HQ-CLI
 ```tcl
