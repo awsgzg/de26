@@ -241,6 +241,12 @@ ip nat source static tcp 192.168.1.10 2026 172.16.1.2 2026
 write
 
 ```
+## NGINX
+## -ISP
+```
+apt-get install nginx -y
+cat > /etc/nginx/sites-available.d/proxy.conf << 'EOF'
+
 
 
 
