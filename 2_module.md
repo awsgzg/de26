@@ -1,3 +1,6 @@
+<details>
+<summary>Настройка по пунктам</summary>
+ 
  <details>
 <summary>SAMBA</summary>
 
@@ -129,7 +132,7 @@ touch /mnt/nfs/test
 
 
 
-
+<details>
 <summary>ANSIBLE</summary>
 
 - ## BR-SRV
@@ -143,6 +146,8 @@ sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@19
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.2.10
 ansible all -m ping
 ```
+</details>
+
 <details>
 <summary>DOCKER</summary>
 
@@ -293,7 +298,7 @@ systemctl enable --now nginx
 ```
 </details>
 
-
+</details>
 
 
 
