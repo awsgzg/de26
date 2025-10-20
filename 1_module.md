@@ -1,6 +1,8 @@
 <details>
 <summary>ALTREPO</summary>
 
+---
+
 - ## ISP
 ```
 cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
@@ -262,6 +264,7 @@ exec bash
 </details>
 
 ---
+
 
 
 
