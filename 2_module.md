@@ -645,23 +645,17 @@ docker compose down && docker compose up -d
 
 - ## HQ-SRV
 ```tcl
-apt-get update && apt-get install -y apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium}
+apt-get update && apt-get install -y lamp-server
 mount -o loop /dev/sr0
-systemctl enable --now httpd2 mysqld
-sleep 3
-echo -e "\n\n\n\n\nP@ssw0rd\nP@ssw0rd\n\n\n\n" | mysql_secure_installation
-mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
-iconv -f UTF-16LE -t UTF-8 /media/ALTLinux/web/dump.sql > /tmp/dump_utf8.sql
-mariadb -u root -pP@ssw0rd webdb < /tmp/dump_utf8.sql
-chmod 777 /var/www/html
 cp /media/ALTLinux/web/index.php /var/www/html
 cp /media/ALTLinux/web/logo.png /var/www/html
-rm -f /var/www/html/index.html
-chown apache2:apache2 /var/www/html
-systemctl restart httpd2
 sed -i 's/$username = "user";/$username = "webc";/g' /var/www/html/index.php
 sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index.php
 sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
+systemctl enable --now mariadb
+sleep 3
+mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
+mariadb -u root -p -D webdb < /media/ALTLinux/web/dump.sql
 ```
 </details>
 
