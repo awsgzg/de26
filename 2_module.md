@@ -153,8 +153,8 @@ sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index
 sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 systemctl enable --now mariadb
 sleep 3
-mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
-mariadb -u root -pP@ssw0rd webdb < /media/ALTLinux/web/dump.sql
+mariadb -u root -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
+mariadb -u root webdb < /media/ALTLinux/web/dump.sql
 systemctl restart httpd2
 
 ```
@@ -229,54 +229,31 @@ services:
     image: mariadb
     container_name: db
     environment:
-      DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: Passw0rd
-      MYSQL_ROOT_PASSWORD: Passwr0d
-      MYSQL_DATABASE: testdb
-      MYSQL_USER: test
-      MYSQL_PASSWORD: Passw0rd
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app_network
-    restart: unless-stopped
+      MARIADB_ROOT_PASSWORD: "Passwr0d"
+      MARIADB_DATABASE: "testdb"
+      MARIADB_USER: "test"
+      MARIADB_PASSWORD: "Passw0rd"
+    restart: always
   testapp:
     image: site
     container_name: testapp
     environment:
-      DB_TYPE: maria
-      DB_HOST: db
-      DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: Passw0rd
-      DB_PORT: 3306
+      DB_TYPE: "maria"
+      DB_HOST: "db"
+      DB_NAME: "testdb"
+      DB_USER: "test"
+      DB_PASS: "Passw0rd"
+      DB_PORT: "3306"
     ports:
       - "8080:8000"
-    networks:
-      - app_network
     depends_on:
       - db
-    restart: unless-stopped
-volumes:
-  db_data:
-networks:
-  app_network:
-    driver: bridge
+    restart: always
 EOF
-docker compose up -d
-sleep 2
-mkdir config
-sleep 2
-echo -e "docker compose -f down\nsystemctl restart docker\ndocker compose up -d" > config/autorestart.sh
-sleep 2
-export EDITOR=vim
-sleep 2
-echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
 sleep 2
 docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
 sleep 2
-docker compose down && docker compose up -d
+docker compose up -d
 
 ```
 
@@ -580,54 +557,29 @@ services:
     image: mariadb
     container_name: db
     environment:
-      DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: Passw0rd
-      MYSQL_ROOT_PASSWORD: Passwr0d
-      MYSQL_DATABASE: testdb
-      MYSQL_USER: test
-      MYSQL_PASSWORD: Passw0rd
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app_network
-    restart: unless-stopped
+      MARIADB_ROOT_PASSWORD: "Passwr0d"
+      MARIADB_DATABASE: "testdb"
+      MARIADB_USER: "test"
+      MARIADB_PASSWORD: "Passw0rd"
+    restart: always
   testapp:
     image: site
     container_name: testapp
     environment:
-      DB_TYPE: maria
-      DB_HOST: db
-      DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: Passw0rd
-      DB_PORT: 3306
+      DB_TYPE: "maria"
+      DB_HOST: "db"
+      DB_NAME: "testdb"
+      DB_USER: "test"
+      DB_PASS: "Passw0rd"
+      DB_PORT: "3306"
     ports:
       - "8080:8000"
-    networks:
-      - app_network
     depends_on:
       - db
-    restart: unless-stopped
-volumes:
-  db_data:
-networks:
-  app_network:
-    driver: bridge
+    restart: always
 EOF
+sleep 2
 docker compose up -d
-sleep 2
-mkdir config
-sleep 2
-echo -e "docker compose -f down\nsystemctl restart docker\ndocker compose up -d" > config/autorestart.sh
-sleep 2
-export EDITOR=vim
-sleep 2
-echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
-sleep 2
-docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
-sleep 2
-docker compose down && docker compose up -d
 ```
 </details>
 
@@ -649,8 +601,8 @@ sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index
 sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 systemctl enable --now mariadb
 sleep 3
-mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
-mariadb -u root -p -D webdb < /media/ALTLinux/web/dump.sql
+mariadb -u root -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
+mariadb -u root -D webdb < /media/ALTLinux/web/dump.sql
 ```
 </details>
 
