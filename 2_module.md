@@ -229,10 +229,10 @@ services:
     image: mariadb
     container_name: db
     environment:
-      MARIADB_ROOT_PASSWORD: "Passwr0d"
+      MARIADB_ROOT_PASSWORD: "P@sswr0d"
       MARIADB_DATABASE: "testdb"
       MARIADB_USER: "test"
-      MARIADB_PASSWORD: "Passw0rd"
+      MARIADB_PASSWORD: "P@ssw0rd"
     restart: always
   testapp:
     image: site
@@ -242,7 +242,7 @@ services:
       DB_HOST: "db"
       DB_NAME: "testdb"
       DB_USER: "test"
-      DB_PASS: "Passw0rd"
+      DB_PASS: "P@ssw0rd"
       DB_PORT: "3306"
     ports:
       - "8080:8000"
@@ -250,8 +250,6 @@ services:
       - db
     restart: always
 EOF
-sleep 2
-docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
 sleep 2
 docker compose up -d
 
@@ -557,10 +555,10 @@ services:
     image: mariadb
     container_name: db
     environment:
-      MARIADB_ROOT_PASSWORD: "Passwr0d"
+      MARIADB_ROOT_PASSWORD: "P@sswr0d"
       MARIADB_DATABASE: "testdb"
       MARIADB_USER: "test"
-      MARIADB_PASSWORD: "Passw0rd"
+      MARIADB_PASSWORD: "P@ssw0rd"
     restart: always
   testapp:
     image: site
@@ -570,7 +568,7 @@ services:
       DB_HOST: "db"
       DB_NAME: "testdb"
       DB_USER: "test"
-      DB_PASS: "Passw0rd"
+      DB_PASS: "P@ssw0rd"
       DB_PORT: "3306"
     ports:
       - "8080:8000"
