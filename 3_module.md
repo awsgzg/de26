@@ -11,6 +11,6 @@
 chmod +x import1
 bash import
 
-<details>
+</details>
 
 awdawdasdawd
