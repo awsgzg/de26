@@ -1,6 +1,5 @@
 <details>
-
-<summary>Импорт пользователей<sammury>
+<summary>Импорт пользователей</summary>
 
 ---
 
