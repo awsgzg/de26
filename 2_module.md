@@ -163,7 +163,7 @@ systemctl restart httpd2
 
 - ## BR-SRV
 ```tcl
-apt-get update && apt-get install wget dos2unix task-samba-dc chrony sshpass ansible docker-compose docker-engine -y
+apt-get update && apt-get install wget dos2unix task-samba-dc chrony sshpass ansible docker-compose-v2 docker-engine -y
 sleep 3
 echo nameserver 192.168.1.10 > /etc/resolv.conf
 sleep 2
@@ -229,21 +229,21 @@ services:
     image: mariadb
     container_name: db
     environment:
-      MARIADB_ROOT_PASSWORD: "P@sswr0d"
-      MARIADB_DATABASE: "testdb"
-      MARIADB_USER: "test"
-      MARIADB_PASSWORD: "P@ssw0rd"
+      MARIADB_ROOT_PASSWORD: P@sswr0d
+      MARIADB_DATABASE: testdb
+      MARIADB_USER: test
+      MARIADB_PASSWORD: P@ssw0rd
     restart: always
   testapp:
     image: site
     container_name: testapp
     environment:
-      DB_TYPE: "maria"
-      DB_HOST: "db"
-      DB_NAME: "testdb"
-      DB_USER: "test"
-      DB_PASS: "P@ssw0rd"
-      DB_PORT: "3306"
+      DB_TYPE: maria
+      DB_HOST: db
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: P@ssw0rd
+      DB_PORT: 3306
     ports:
       - "8080:8000"
     depends_on:
@@ -526,7 +526,7 @@ systemctl restart chronyd
 
 - ## BR-SRV
 ```tcl
-apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
+apt-get update && apt-get install sshpass ansible -y
 echo -e "[servers]\nHQ-SRV ansible_host=192.168.1.10\nHQ-CLI ansible_host=192.168.2.10\n[servers:vars]\nansible_user=sshuser\nansible_port=2026\n[routers]\nHQ-RTR ansible_host=192.168.1.1\nBR-RTR ansible_host=192.168.3.1\n[routers:vars]\nansible_user=net_admin\nansible_password=P@ssw0rd\nansible_connection=network_cli\nansible_network_os=ios" > /etc/ansible/hosts
 sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
@@ -545,6 +545,7 @@ ansible all -m ping
 
  - ## BR-SRV
 ```tcl
+apt-get install docker-compose-v2 docker-engine -y
 systemctl enable --now docker
 mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
@@ -555,21 +556,21 @@ services:
     image: mariadb
     container_name: db
     environment:
-      MARIADB_ROOT_PASSWORD: "P@sswr0d"
-      MARIADB_DATABASE: "testdb"
-      MARIADB_USER: "test"
-      MARIADB_PASSWORD: "P@ssw0rd"
+      MARIADB_ROOT_PASSWORD: P@sswr0d
+      MARIADB_DATABASE: testdb
+      MARIADB_USER: test
+      MARIADB_PASSWORD: P@ssw0rd
     restart: always
   testapp:
     image: site
     container_name: testapp
     environment:
-      DB_TYPE: "maria"
-      DB_HOST: "db"
-      DB_NAME: "testdb"
-      DB_USER: "test"
-      DB_PASS: "P@ssw0rd"
-      DB_PORT: "3306"
+      DB_TYPE: maria
+      DB_HOST: db
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: P@ssw0rd
+      DB_PORT: 3306
     ports:
       - "8080:8000"
     depends_on:
