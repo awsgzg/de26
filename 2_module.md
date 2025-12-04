@@ -602,6 +602,7 @@ systemctl enable --now mariadb
 sleep 3
 mariadb -u root -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
 mariadb -u root -D webdb < /media/ALTLinux/web/dump.sql
+systemctl restart httpd2
 ```
 </details>
 
