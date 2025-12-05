@@ -226,7 +226,7 @@ docker load < /media/ALTLinux/docker/mariadb_latest.tar
 cat > docker-compose.yml << 'EOF'
 services:
   db:
-    image: mariadb
+    image: mariadb:10.11
     container_name: db
     environment:
       MARIADB_ROOT_PASSWORD: P@sswr0d
@@ -235,7 +235,7 @@ services:
       MARIADB_PASSWORD: P@ssw0rd
     restart: always
   testapp:
-    image: site
+    image: site:latest
     container_name: testapp
     environment:
       DB_TYPE: maria
@@ -553,7 +553,7 @@ docker load < /media/ALTLinux/docker/mariadb_latest.tar
 cat > docker-compose.yml << 'EOF'
 services:
   db:
-    image: mariadb
+    image: mariadb:10.11
     container_name: db
     environment:
       MARIADB_ROOT_PASSWORD: P@sswr0d
@@ -562,7 +562,7 @@ services:
       MARIADB_PASSWORD: P@ssw0rd
     restart: always
   testapp:
-    image: site
+    image: site:latest
     container_name: testapp
     environment:
       DB_TYPE: maria
